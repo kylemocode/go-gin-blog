@@ -1,0 +1,32 @@
+version: "3"
+
+services:
+  database:
+    image: mysql:5.7
+    container_name: mysqlContainer
+    restart: always
+    environment:
+      - MYSQL_DATABASE=db
+      - MYSQL_ROOT_USER=root
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=dev
+      - MYSQL_PASSWORD=dev
+    ports:
+      - "30678:3306"
+    expose:
+      - "30678"
+
+  myadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: php_myadminContainer
+    ports:
+      - "8200:80"
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=database
+      - PMA_USER=root
+      - PMA_PASSWORD=root
+      - PMA_ROOT_PASSWORD=root
+    restart: always
+    depends_on:
+      - database
